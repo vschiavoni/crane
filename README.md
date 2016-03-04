@@ -218,3 +218,7 @@ Percentage of the requests served within a certain time (ms)
   99%   1329
  100%   1543 (longest request)
 
+#TODO
+1. Use Proto Buffer
+2. Use tcmalloc
+3. Use docker to create local instances
