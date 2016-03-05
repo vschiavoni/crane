@@ -166,7 +166,6 @@ which criu
   /usr/local/sbin/criu
 ```
 
-
 * Install server applications depending on which one you would like to run.
 Currently we have tested Crane with these servers: mongoose, apache, clamav, mediatomb, and mysql.
 ```
@@ -179,11 +178,15 @@ The default IPs are already set for the RCS@Columbia team, so if you are in this
 You will need three replica machines to host servers, and one client machine.
 For instance, in our Crane project, our client machine is 128.59.21.11, three replicas: (128.59.17.174 (head), 128.59.17.172, 128.59.17.173).
 If your machine IPs are not this setting, please run these same commands on all the replica (server) machines:
-> cd $MSMR_ROOT/eval-container
-> ./update-replica-IPs.sh <primary IP> <backup1 IP> <backup2 IP>"
+```
+cd $MSMR_ROOT/eval-container
+./update-replica-IPs.sh <primary IP> <backup1 IP> <backup2 IP>
+```
 
 For instance, we ran this same command (including the order of IPs) on 128.59.17.174, 128.59.17.172, 128.59.17.173.
-> ./update-replica-IPs.sh 128.59.17.174 128.59.17.172 128.59.17.173
+```
+./update-replica-IPs.sh 128.59.17.174 128.59.17.172 128.59.17.173
+```
 
 
 9. Run apache with Crane. Run the below commands on your "client" machine (not any server machine).
@@ -205,6 +208,7 @@ Run the apache with DMT (Parrot) only.
 ```
 
 Below are one sample output from the ab server, if you ran any one of the above "new-run.sh" commands.
+```
 ===============================
 This is ApacheBench, Version 2.3 <$Revision: 655654 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
@@ -249,7 +253,7 @@ Percentage of the requests served within a certain time (ms)
   98%   1262
   99%   1329
  100%   1543 (longest request)
-
+```
 #TODO
 1. Use Proto Buffer
 2. Use tcmalloc
