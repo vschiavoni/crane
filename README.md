@@ -93,7 +93,7 @@ sudo add-apt-repository ppa:ubuntu-lxc/daily
 sudo apt-get update
 sudo apt-get install lxc
 lxc-create --version
-  1.1.0
+ 2.0.0
 ```
 
 Create a new container named "u1" (if this container does not exist in /var/lib/lxc/u1)
