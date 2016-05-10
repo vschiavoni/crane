@@ -88,6 +88,7 @@ Test dynamorio with the "drcov" code coverage tool. If these commands succeed, r
 
 * Install lxc 1.1 (in the host OS)
 ```
+sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:ubuntu-lxc/daily
 sudo apt-get update
 sudo apt-get install lxc
