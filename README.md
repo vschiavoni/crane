@@ -19,7 +19,7 @@ sudo pip install OutputCheck          (this utility is only required by the test
 * Commands to checkout a brand-new project:
 ```
 git clone https://github.com/ruigulala/crane.git
-cd m-smr
+cd crane
 ```
 
 * Set env vars in ~/.bashrc.
