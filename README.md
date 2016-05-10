@@ -74,7 +74,7 @@ cd /usr/share/
 git clone https://github.com/DynamoRIO/dynamorio.git
 cd dynamorio && mkdir build && cd build
 cmake .. && make -j && make drcov
-cd tools && ln -s $PWD/../drcov.drrun64 .
+cd tools && ln -s $PWD/../drcov.drrun64 . #this did not work for me
 mkdir lib64 && cd lib64 && mkdir release && cd release
 ln -s $PWD/../../../clients/lib64/release/libdrcov.so .
 exit (exit from sudoer)
