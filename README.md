@@ -110,7 +110,8 @@ sudo lxc-stop -n u1
 
 Config u1 fstab to share memory between the proxy (in host OS) and the server process (in container).
 ```
-sudo echo "/dev/shm dev/shm none bind,create=dir" > /var/lib/lxc/u1/fstab
+#sudo echo "/dev/shm dev/shm none bind,create=dir" > /var/lib/lxc/u1/fstab
+sudo bash -c "echo '/dev/shm dev/shm none bind,create=dir' > /var/lib/lxc/u1/fstab"
 ```
 
 Append these lines to /var/lib/lxc/u1/config
