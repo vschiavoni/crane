@@ -198,6 +198,13 @@ sent requests to the server machines. To verify this, you can just manually star
 and manually launch a "ab" client benchmark on your client machine, and see whether ab gets responses correctly.
 
 For instance, these commands are ran on our client machine: 128.59.21.11.
+
+First install pssh:
+
+```
+sudo apt-get install pssh
+```
+Then proceed:
 ```
 cd $MSMR_ROOT/eval-container
 ./new-run.sh configs/apache.sh no_build joint_sched 1
@@ -209,7 +216,7 @@ Run the apache with DMT (Parrot) only.
 ./new-run.sh configs/apache.sh no_build xtern_only 1
 ```
 
-Below are one sample output from the ab server, if you ran any one of the above "new-run.sh" commands.
+Below are one sample output from the ab client, if you ran any one of the above "new-run.sh" commands.
 ```
 ===============================
 This is ApacheBench, Version 2.3 <$Revision: 655654 $>
