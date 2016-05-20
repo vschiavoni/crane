@@ -102,7 +102,7 @@ sudo lxc-create -t ubuntu -n u1 -- -r trusty -a amd64
 ```
 This command will take a few minutes to download all trusty (14.04) initial packages.
 
-Start the server for the first time, so that we have "/var/lib/lxc/u1/config and /var/lib/lxc/u1/fstab".
+Start the server for the first time, so that we have "/mnt/containers/u1/config and /mnt/containers/u1/fstab".
 ```
 sudo lxc-start -n u1
 sudo lxc-stop -n u1
@@ -110,8 +110,7 @@ sudo lxc-stop -n u1
 
 Config u1 fstab to share memory between the proxy (in host OS) and the server process (in container).
 ```
-#sudo echo "/dev/shm dev/shm none bind,create=dir" > /var/lib/lxc/u1/fstab
-sudo bash -c "echo '/dev/shm dev/shm none bind,create=dir' > /var/lib/lxc/u1/fstab"
+sudo bash -c "echo '/dev/shm dev/shm none bind,create=dir' > /mnt/containers/u1/fstab"
 ```
 
 Append these lines to /var/lib/lxc/u1/config
@@ -131,30 +130,28 @@ And restart the container.
 ```
 sudo lxc-start -n u1
 ```
+
 Check the IP.
 ```
 ssh ubuntu@10.0.3.111 
    Enter password: "ubuntu"
 ```
-This "ubuntu" user is already a sudoer. 
-Then, you are free to install crane, gcc, criu, and other packages in this container.
-
-Add your own username into the lxc without asking password anymore.
-For example, in bug03 machine:
-Generate a private/public key pair, put it into your ~/.ssh/.
-Rename the private key to be ~/.ssh/lxc_priv_key
-Append the public key to the u1 container's ~/.ssh/auth..._keys
-Then
+	This "ubuntu" user is already a sudoer. 
+	Then, you are free to install crane, gcc, and other packages inside the u1 container.
+	Add your own username into the lxc without asking password anymore.
+	Generate a private/public key pair, put it into your ~/.ssh/.
+	Rename the private key to be ~/.ssh/lxc_priv_key
+	Append the public key to the u1 container's ~/.ssh/auth..._keys 
 ```
-ssh your_user_name@10.0.3.111 -i ~/.ssh/lxc_priv_key
+ssh ubuntu@10.0.3.111 -i ~/.ssh/lxc_priv_key
 ```
 Make sure you can login without entering password.
 When you run sudo in the u1 container, avoid asking sudo password, append this line to /etc/sudoers
 ```
-ruigu ALL = NOPASSWD : ALL
+ubuntu ALL = NOPASSWD : ALL
 ```
 
-* Install CRIU (just one way installation work, in the u1 container).
+* Install CRIU inside the u1 container:
 ```
 cd $MSMR_ROOT/tools/criu/ 
 wget http://download.openvz.org/criu/criu-1.6.tar.bz2
