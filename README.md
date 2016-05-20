@@ -24,7 +24,7 @@ cd crane
 
 * Set env vars in ~/.bashrc.
 ```
-export MSMR_ROOT=<...>     # where you put m-smr
+export MSMR_ROOT=<...>     # where you checkout crane.git
 export XTERN_ROOT=<...>    # where you put xtern, a git submodule of m-smr
 export LD_LIBRARY_PATH=$MSMR_ROOT/libevent_paxos/.local/lib:$LD_LIBRARY_PATH
 ```
