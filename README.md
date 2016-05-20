@@ -136,12 +136,12 @@ Check the IP.
 ssh ubuntu@10.0.3.111 
    Enter password: "ubuntu"
 ```
-	This "ubuntu" user is already a sudoer. 
-	Then, you are free to install crane, gcc, and other packages inside the u1 container.
-	Add your own username into the lxc without asking password anymore.
-	Generate a private/public key pair, put it into your ~/.ssh/.
-	Rename the private key to be ~/.ssh/lxc_priv_key
-	Append the public key to the u1 container's ~/.ssh/auth..._keys 
+This "ubuntu" user is already a sudoer. 
+Then, you are free to install crane, gcc, and other packages inside the u1 container.
+Add your own username (ubuntu) into the lxc without asking password anymore.
+Generate a private/public key pair, put it into your ~/.ssh/.
+Rename the private key to be ~/.ssh/lxc_priv_key
+Append the public key to the u1 container's ~/.ssh/auth..._keys 
 ```
 ssh ubuntu@10.0.3.111 -i ~/.ssh/lxc_priv_key
 ```
