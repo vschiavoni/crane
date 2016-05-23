@@ -96,6 +96,11 @@ lxc-create --version
  2.0.0
 ```
 
+I've used a different path to create and store LXC containers. A second disk of 80 GB is mounted in /mnt/containers. Therefore the following instructions are adapted accordingly. First, add the following to /etc/lxc.conf:
+```
+lxc.lxcpath = /mnt/containers
+```
+
 Create a new container named "u1" (if this container does not exist in /var/lib/lxc/u1)
 ```
 sudo lxc-create -t ubuntu -n u1 -- -r trusty -a amd64
@@ -113,7 +118,7 @@ Config u1 fstab to share memory between the proxy (in host OS) and the server pr
 sudo bash -c "echo '/dev/shm dev/shm none bind,create=dir' > /mnt/containers/u1/fstab"
 ```
 
-Append these lines to /var/lib/lxc/u1/config
+Append these lines to /mnt/containers/u1/config
 ```
 # for crane project.
 lxc.network.ipv4 = 10.0.3.111/16
