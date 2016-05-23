@@ -125,8 +125,8 @@ lxc.network.ipv4 = 10.0.3.111/16
 lxc.console = none
 lxc.tty = 0
 lxc.cgroup.devices.deny = c 5:1 rwm
-lxc.rootfs = /var/lib/lxc/u1/rootfs
-lxc.mount = /var/lib/lxc/u1/fstab
+lxc.rootfs = /mnt/containers/u1/rootfs
+lxc.mount = /mnt/containers/u1/fstab
 lxc.mount.auto = proc:rw sys:rw cgroup-full:rw
 lxc.aa_profile = unconfined
 ```
