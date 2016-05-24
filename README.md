@@ -6,8 +6,8 @@ Multi-threaded State Machine Replication
 
 Install depdendent libraries/tools. Use Ubuntu 14.04 LTS (Trusty Tahr), Boost version: 1.54, with amd64.
 ```
-sudo apt-get install build-essential
-sudo apt-get install libboost-dev git subversion nano libconfig-dev libevent-dev \
+sudo apt-get install --assume-yes build-essential
+sudo apt-get install --assume-yes libboost-dev git subversion nano libconfig-dev libevent-dev \
 	sqlite3 libsqlite3-dev libdb-dev libboost-system-dev autoconf m4 dejagnu flex bison axel zlib1g-dev \
 	libbz2-dev libxml-libxml-perl python-pip python-setuptools python-dev libxslt1-dev libxml2-dev \
 	wget curl php5-cgi psmisc mencoder
@@ -43,8 +43,7 @@ git submodule update --init --recursive
 * Compile xtern and libevent_paxos.
 ```
 cd $XTERN_ROOT
-mkdir obj
-cd obj
+mkdir obj && cd obj
 ./../configure --prefix=$XTERN_ROOT/install
 make clean; make; make install
 cd $MSMR_ROOT/libevent_paxos
@@ -88,10 +87,10 @@ Test dynamorio with the "drcov" code coverage tool. If these commands succeed, r
 
 * Install lxc 1.1 (in the host OS)
 ```
-sudo apt-get install software-properties-common
+sudo apt-get install --assume-yes software-properties-common
 sudo add-apt-repository ppa:ubuntu-lxc/daily
 sudo apt-get update
-sudo apt-get install lxc
+sudo apt-get install --assume-yes lxc
 lxc-create --version
  2.0.0
 ```
@@ -167,11 +166,10 @@ ubuntu ALL = (ALL) NOPASSWD : ALL
 cd $MSMR_ROOT/tools/criu/ 
 wget http://download.openvz.org/criu/criu-1.6.tar.bz2
 tar jxvf criu-1.6.tar.bz2
-sudo apt-get install libprotobuf-dev libprotoc-dev protobuf-c-compiler \
+sudo apt-get install --assume-yes libprotobuf-dev libprotoc-dev protobuf-c-compiler \
 	libprotobuf-c0 libprotobuf-c0-dev asciidoc bsdmainutils protobuf-compiler
-cd criu-1.6
-make -j
-sudo make install (the PREFIX directory for criu by default is /usr/local/)
+cd criu-1.6 && make -j
+sudo make install #(the PREFIX directory for criu by default is /usr/local/)
 which criu
   /usr/local/sbin/criu
 ```
