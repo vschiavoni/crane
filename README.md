@@ -101,6 +101,12 @@ I've used a different path to create and store LXC containers. A second disk of 
 lxc.lxcpath = /mnt/containers
 ```
 
+Then mount the partition:
+
+```
+sudo mount /dev/vdb /mnt/containers
+```
+
 Create a new container named "u1" (if this container does not exist in /var/lib/lxc/u1)
 ```
 sudo lxc-create -t ubuntu -n u1 -- -r trusty -a amd64
@@ -153,7 +159,7 @@ ssh ubuntu@10.0.3.111 -i ~/.ssh/lxc_priv_key
 Make sure you can login without entering password.
 When you run sudo in the u1 container, avoid asking sudo password, append this line to /etc/sudoers
 ```
-ubuntu ALL = NOPASSWD : ALL
+ubuntu ALL = (ALL) NOPASSWD : ALL
 ```
 
 * Install CRIU inside the u1 container:
