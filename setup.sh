@@ -44,12 +44,20 @@ sudo lxc-start -n u1
 sudo lxc-stop -n u1
 
 sudo bash -c "echo '/dev/shm dev/shm none bind,create=dir' > /mnt/containers/u1/fstab"
-sudo echo "lxc.network.ipv4 = 10.0.3.111/16" >> /mnt/containers/u1/config
-sudo echo "lxc.console = none" >> /mnt/containers/u1/config
-sudo echo "lxc.tty = 0" >> /mnt/containers/u1/config
-sudo echo "lxc.cgroup.devices.deny = c 5:1 rwm" >> /mnt/containers/u1/config
-sudo echo "lxc.rootfs = /mnt/containers/u1/rootfs" >> /mnt/containers/u1/config
-sudo echo "lxc.mount = /mnt/containers/u1/fstab" >> /mnt/containers/u1/config
-sudo echo "lxc.mount.auto = proc:rw sys:rw cgroup-full:rw" >> /mnt/containers/u1/config
-sudo echo "lxc.aa_profile = unconfined" >> /mnt/containers/u1/config
+sudo bash -c "echo 'lxc.network.ipv4 = 10.0.3.111/16' >> /mnt/containers/u1/config"
+sudo bash -c "echo 'lxc.console = none' >> /mnt/containers/u1/config"
+sudo bash -c "echo 'lxc.tty = 0' >> /mnt/containers/u1/config"
+sudo bash -c "echo 'lxc.cgroup.devices.deny = c 5:1 rwm' >> /mnt/containers/u1/config"
+sudo bash -c "echo 'lxc.rootfs = /mnt/containers/u1/rootfs' >> /mnt/containers/u1/config"
+sudo bash -c "echo 'lxc.mount = /mnt/containers/u1/fstab' >> /mnt/containers/u1/config"
+sudo bash -c "echo 'lxc.mount.auto = proc:rw sys:rw cgroup-full:rw' >> /mnt/containers/u1/config"
+sudo bash -c "echo 'lxc.aa_profile = unconfined' >> /mnt/containers/u1/config"
 sudo lxc-start -n u1
+
+#TODO: create ~/.ssh/config and add these lines:
+#Host 10.0.3.*
+#         User ubuntu
+#         IdentityFile ~/.ssh/lxc_priv_key
+#StrictHostKeyChecking no
+cat /dev/zero| ssh-keygen -f /home/ubuntu/.ssh/lxc_priv_key -N ""
+ssh-copy-id -i /home/ubuntu/.ssh/lxc_priv_key.pub ubuntu@10.0.3.111
