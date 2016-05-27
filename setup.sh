@@ -54,10 +54,10 @@ sudo bash -c "echo 'lxc.mount.auto = proc:rw sys:rw cgroup-full:rw' >> /mnt/cont
 sudo bash -c "echo 'lxc.aa_profile = unconfined' >> /mnt/containers/u1/config"
 sudo lxc-start -n u1
 
-#TODO: create ~/.ssh/config and add these lines:
-#Host 10.0.3.*
-#         User ubuntu
-#         IdentityFile ~/.ssh/lxc_priv_key
-#StrictHostKeyChecking no
+touch ~/.ssh/config
+echo "10.0.3.*" >> ~/.ssh/config
+echo "	User ubuntu" >> ~/.ssh/config
+echo "	IdentityFile ~/.ssh/lxc_priv_key" >> ~/.ssh/config
+echo "StrictHostKeyChecking no" >> ~/.ssh/config
 cat /dev/zero| ssh-keygen -f /home/ubuntu/.ssh/lxc_priv_key -N ""
 ssh-copy-id -i /home/ubuntu/.ssh/lxc_priv_key.pub ubuntu@10.0.3.111
