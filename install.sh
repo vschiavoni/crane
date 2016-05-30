@@ -27,6 +27,7 @@ sudo add-apt-repository -y ppa:ubuntu-lxc/daily
 sudo apt-get update
 sudo apt-get install --assume-yes lxc
 
+sudo mkdir /mnt/containers
 sudo mount /dev/vdb /mnt/containers #specific to our VM template
 sudo lxc-create -t ubuntu -n u1 -- -r trusty -a amd64
 sudo lxc-start -n u1
