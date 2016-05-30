@@ -77,4 +77,8 @@ ssh -t 10.0.3.111 "export SUDO_ASKPASS=~/pass.sh; sudo -A apt-get install --assu
 ssh -t 10.0.3.111 "export SUDO_ASKPASS=~/pass.sh; sudo -A sudo pip install numpy"
 ssh -t 10.0.3.111 "export SUDO_ASKPASS=~/pass.sh; sudo -A sudo pip install OutputCheck"
 ssh -t 10.0.3.111 "git clone https://github.com/ruigulala/crane.git"
-#TODO set vars in ~/.bashrc 
+ssh -t 10.0.3.111 "echo 'export MSMR_ROOT=/home/ubuntu/crane' >> ~/.profile"
+ssh -t 10.0.3.111 "echo 'export XTERN_ROOT=/home/ubuntu/crane/xtern' >> ~/.profile"
+ssh -t 10.0.3.111 "echo 'export LD_LIBRARY_PATH=$MSMR_ROOT/libevent_paxos/.local/lib:$LD_LIBRARY_PATH' >> ~/.profile"
+ssh -t 10.0.3.111 "cd crane/xtern/ ; mkdir obj ; cd obj ; ./../configure --prefix=$XTERN_ROOT/install; make clean; make; make install "
+ssh -t 10.0.3.111 "cd $MSMR_ROOT/libevent_paxos; ./mk; make clean; make "
