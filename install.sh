@@ -27,10 +27,11 @@ sudo add-apt-repository -y ppa:ubuntu-lxc/daily
 sudo apt-get update
 sudo apt-get install --assume-yes lxc
 
+#if you have enough disk space
 sudo bash -c "echo 'lxc.lxcpath = /mnt/containers' > /etc/lxc/lxc.conf"
-
 sudo mkdir /mnt/containers
 sudo mount /dev/vdb /mnt/containers #specific to our VM template
+
 sudo lxc-create -t ubuntu -n u1 -- -r trusty -a amd64
 sudo lxc-start -n u1
 sudo lxc-stop -n u1
@@ -45,11 +46,17 @@ sudo bash -c "echo 'lxc.mount = /mnt/containers/u1/fstab' >> /mnt/containers/u1/
 sudo bash -c "echo 'lxc.mount.auto = proc:rw sys:rw cgroup-full:rw' >> /mnt/containers/u1/config"
 sudo bash -c "echo 'lxc.aa_profile = unconfined' >> /mnt/containers/u1/config"
 sudo lxc-start -n u1
-
+sleep 2 #wait a bit, it takes a while to bootstrap
 touch ~/.ssh/config
 echo "Host 10.0.3.*" >> ~/.ssh/config
 echo "	User ubuntu" >> ~/.ssh/config
 echo "	IdentityFile ~/.ssh/lxc_priv_key" >> ~/.ssh/config
 echo "StrictHostKeyChecking no" >> ~/.ssh/config
 cat /dev/zero| ssh-keygen -f /home/ubuntu/.ssh/lxc_priv_key -N ""
-ssh-copy-id -i /home/ubuntu/.ssh/lxc_priv_key.pub ubuntu@10.0.3.111
+
+/usr/bin/expect <<EOD
+spawn ssh-copy-id -i /home/ubuntu/.ssh/lxc_priv_key.pub ubuntu@10.0.3.111
+expect "*password:*"
+send "ubuntu\r"
+expect eof
+EOD
