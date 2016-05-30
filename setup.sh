@@ -3,7 +3,8 @@
 #Assumptions: 
 #- base os: Ubuntu 14.04 LTS (UniNE cluster VM template ID: 404 )
 #- there must be a user ubuntu (this is the case for the VMs deployed from our template)
-# 
+# To execute it inside a screen session:
+# /bin/bash -c 'screen -t test /bin/bash /home/ubuntu/setup.sh;'
 #Author: valerio.schiavoni@unine.ch
 
 echo "export MSMR_ROOT=/home/ubuntu/crane" >> ~/.profile
