@@ -1,6 +1,11 @@
 Crane
 =====
 
+Quick setup:
+```
+curl -sfL https://raw.githubusercontent.com/vschiavoni/crane/master/setup.sh | bash
+````
+
 Multi-threaded State Machine Replication
 
 
@@ -161,8 +166,9 @@ When you run sudo in the u1 container, avoid asking sudo password, append this l
 ubuntu ALL = (ALL) NOPASSWD : ALL
 ```
 
-* Install CRIU inside the u1 container:
+* Install Crane and CRIU inside the u1 container:
 ```
+
 cd $MSMR_ROOT/tools/criu/ 
 wget http://download.openvz.org/criu/criu-1.6.tar.bz2
 tar jxvf criu-1.6.tar.bz2
