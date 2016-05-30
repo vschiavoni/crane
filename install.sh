@@ -16,10 +16,12 @@ git submodule update --init --recursive #maybe useless
 cd $XTERN_ROOT
 mkdir obj && cd obj
 ./../configure --prefix=$XTERN_ROOT/install
-make clean; make; make install
+make clean
+make 
+make install
 cd $MSMR_ROOT/libevent_paxos
 ./mk
-make clean; 
+make clean
 make 
 
 sudo apt-get install --assume-yes software-properties-common
@@ -27,10 +29,11 @@ sudo add-apt-repository -y ppa:ubuntu-lxc/daily
 sudo apt-get update
 sudo apt-get install --assume-yes lxc
 
-#if you have enough disk space
+#if you have enough disk space, this section can be commented 
 sudo bash -c "echo 'lxc.lxcpath = /mnt/containers' > /etc/lxc/lxc.conf"
 sudo mkdir /mnt/containers
 sudo mount /dev/vdb /mnt/containers #specific to our VM template
+#
 
 sudo lxc-create -t ubuntu -n u1 -- -r trusty -a amd64
 sudo lxc-start -n u1
@@ -53,10 +56,25 @@ echo "	User ubuntu" >> ~/.ssh/config
 echo "	IdentityFile ~/.ssh/lxc_priv_key" >> ~/.ssh/config
 echo "StrictHostKeyChecking no" >> ~/.ssh/config
 cat /dev/zero| ssh-keygen -f /home/ubuntu/.ssh/lxc_priv_key -N ""
-
+sudo apt-get install --assume-yes expect
 /usr/bin/expect <<EOD
 spawn ssh-copy-id -i /home/ubuntu/.ssh/lxc_priv_key.pub ubuntu@10.0.3.111
 expect "*password:*"
 send "ubuntu\r"
 expect eof
 EOD
+
+echo "#!/bin/bash" >> pass.sh
+echo "echo 'ubuntu'" >> pass.sh
+scp pass.sh 10.0.3.111:
+rm pass.sh
+ssh -t 10.0.3.111 "chmod u+x pass.sh"
+ssh -t 10.0.3.111 "export SUDO_ASKPASS=~/pass.sh; sudo -A apt-get install --assume-yes build-essential"
+ssh -t 10.0.3.111 "export SUDO_ASKPASS=~/pass.sh; sudo -A apt-get install --assume-yes libboost-dev git subversion nano libconfig-dev libevent-dev \
+    sqlite3 libsqlite3-dev libdb-dev libboost-system-dev autoconf m4 dejagnu flex bison axel zlib1g-dev \
+    libbz2-dev libxml-libxml-perl python-pip python-setuptools python-dev libxslt1-dev libxml2-dev \
+    wget curl php5-cgi psmisc mencoder"
+ssh -t 10.0.3.111 "export SUDO_ASKPASS=~/pass.sh; sudo -A sudo pip install numpy"
+ssh -t 10.0.3.111 "export SUDO_ASKPASS=~/pass.sh; sudo -A sudo pip install OutputCheck"
+ssh -t 10.0.3.111 "git clone https://github.com/ruigulala/crane.git"
+#TODO set vars in ~/.bashrc 
