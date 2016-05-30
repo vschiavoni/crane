@@ -27,6 +27,8 @@ sudo add-apt-repository -y ppa:ubuntu-lxc/daily
 sudo apt-get update
 sudo apt-get install --assume-yes lxc
 
+sudo bash -c "echo 'lxc.lxcpath = /mnt/containers' > /etc/lxc/lxc.conf"
+
 sudo mkdir /mnt/containers
 sudo mount /dev/vdb /mnt/containers #specific to our VM template
 sudo lxc-create -t ubuntu -n u1 -- -r trusty -a amd64
@@ -45,7 +47,7 @@ sudo bash -c "echo 'lxc.aa_profile = unconfined' >> /mnt/containers/u1/config"
 sudo lxc-start -n u1
 
 touch ~/.ssh/config
-echo "10.0.3.*" >> ~/.ssh/config
+echo "Host 10.0.3.*" >> ~/.ssh/config
 echo "	User ubuntu" >> ~/.ssh/config
 echo "	IdentityFile ~/.ssh/lxc_priv_key" >> ~/.ssh/config
 echo "StrictHostKeyChecking no" >> ~/.ssh/config
