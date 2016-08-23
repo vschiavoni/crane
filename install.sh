@@ -57,10 +57,10 @@ echo "Host 10.0.3.*" >> ~/.ssh/config
 echo "	User ubuntu" >> ~/.ssh/config
 echo "	IdentityFile ~/.ssh/lxc_priv_key" >> ~/.ssh/config
 echo "StrictHostKeyChecking no" >> ~/.ssh/config
-cat /dev/zero| ssh-keygen -f /home/ubuntu/.ssh/lxc_priv_key -N ""
+cat /dev/zero| ssh-keygen -f $HOME/.ssh/lxc_priv_key -N ""
 sudo apt-get install --assume-yes expect
 /usr/bin/expect <<EOD
-spawn ssh-copy-id -i /home/ubuntu/.ssh/lxc_priv_key.pub ubuntu@10.0.3.111
+spawn ssh-copy-id -i $HOME/.ssh/lxc_priv_key.pub ubuntu@10.0.3.111
 expect "*password:*"
 send "ubuntu\r"
 expect eof
