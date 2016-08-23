@@ -32,9 +32,11 @@ sudo apt-get update
 sudo apt-get install --assume-yes lxc
 
 #if you have enough disk space, this section can be commented 
-sudo bash -c "echo 'lxc.lxcpath = /mnt/containers' > /etc/lxc/lxc.conf"
-sudo mkdir /mnt/containers
-sudo mount /dev/vdb /mnt/containers #specific to our VM template
+if [ "$HOSTNAME" = ubuntu ]; then
+	sudo bash -c "echo 'lxc.lxcpath = /mnt/containers' > /etc/lxc/lxc.conf"
+	sudo mkdir /mnt/containers
+	sudo mount /dev/vdb /mnt/containers #specific to our VM template
+fi
 #
 
 sudo lxc-create -t ubuntu -n u1 -- -r trusty -a amd64
