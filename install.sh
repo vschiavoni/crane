@@ -43,15 +43,28 @@ sudo lxc-create -t ubuntu -n u1 -- -r trusty -a amd64
 sudo lxc-start -n u1
 sudo lxc-stop -n u1
 
-sudo bash -c "echo '/dev/shm dev/shm none bind,create=dir' > /mnt/containers/u1/fstab"
-sudo bash -c "echo 'lxc.network.ipv4 = 10.0.3.111/16' >> /mnt/containers/u1/config"
-sudo bash -c "echo 'lxc.console = none' >> /mnt/containers/u1/config"
-sudo bash -c "echo 'lxc.tty = 0' >> /mnt/containers/u1/config"
-sudo bash -c "echo 'lxc.cgroup.devices.deny = c 5:1 rwm' >> /mnt/containers/u1/config"
-sudo bash -c "echo 'lxc.rootfs = /mnt/containers/u1/rootfs' >> /mnt/containers/u1/config"
-sudo bash -c "echo 'lxc.mount = /mnt/containers/u1/fstab' >> /mnt/containers/u1/config"
-sudo bash -c "echo 'lxc.mount.auto = proc:rw sys:rw cgroup-full:rw' >> /mnt/containers/u1/config"
-sudo bash -c "echo 'lxc.aa_profile = unconfined' >> /mnt/containers/u1/config"
+if [ "$HOSTNAME" = ubuntu ]; then
+	sudo bash -c "echo '/dev/shm dev/shm none bind,create=dir' > /mnt/containers/u1/fstab"
+	sudo bash -c "echo 'lxc.network.ipv4 = 10.0.3.111/16' >> /mnt/containers/u1/config"
+	sudo bash -c "echo 'lxc.console = none' >> /mnt/containers/u1/config"
+	sudo bash -c "echo 'lxc.tty = 0' >> /mnt/containers/u1/config"
+	sudo bash -c "echo 'lxc.cgroup.devices.deny = c 5:1 rwm' >> /mnt/containers/u1/config"
+	sudo bash -c "echo 'lxc.rootfs = /mnt/containers/u1/rootfs' >> /mnt/containers/u1/config"
+	sudo bash -c "echo 'lxc.mount = /mnt/containers/u1/fstab' >> /mnt/containers/u1/config"
+	sudo bash -c "echo 'lxc.mount.auto = proc:rw sys:rw cgroup-full:rw' >> /mnt/containers/u1/config"
+	sudo bash -c "echo 'lxc.aa_profile = unconfined' >> /mnt/containers/u1/config"
+else
+	sudo bash -c "echo '/dev/shm dev/shm none bind,create=dir' > /var/lib/lxc/u1/fstab"
+	sudo bash -c "echo 'lxc.network.ipv4 = 10.0.3.111/16' >> /var/lib/lxc/u1/config"
+	sudo bash -c "echo 'lxc.console = none' >> /var/lib/lxc/u1/config"
+	sudo bash -c "echo 'lxc.tty = 0' >> /var/lib/lxc/u1/config"
+	sudo bash -c "echo 'lxc.cgroup.devices.deny = c 5:1 rwm' >> /var/lib/lxc/u1/config"
+	sudo bash -c "echo 'lxc.rootfs = /mnt/containers/u1/rootfs' >> /var/lib/lxc/u1/config"
+	sudo bash -c "echo 'lxc.mount = /mnt/containers/u1/fstab' >> /var/lib/lxc/u1/config"
+	sudo bash -c "echo 'lxc.mount.auto = proc:rw sys:rw cgroup-full:rw' >> /var/lib/lxc/u1/config"
+	sudo bash -c "echo 'lxc.aa_profile = unconfined' >> /var/lib/lxc/u1/config"	
+fi
+
 sudo lxc-start -n u1
 sleep 2 #wait a bit, it takes a while to bootstrap
 touch ~/.ssh/config
