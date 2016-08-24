@@ -81,7 +81,7 @@ send "ubuntu\r"
 expect eof
 EOD
 
-echo "#!/bin/bash" >> pass.sh
+echo '#!/bin/bash' >> pass.sh
 echo "echo 'ubuntu'" >> pass.sh
 scp pass.sh 10.0.3.111:
 rm pass.sh
