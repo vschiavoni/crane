@@ -59,8 +59,8 @@ else
 	sudo bash -c "echo 'lxc.console = none' >> /var/lib/lxc/u1/config"
 	sudo bash -c "echo 'lxc.tty = 0' >> /var/lib/lxc/u1/config"
 	sudo bash -c "echo 'lxc.cgroup.devices.deny = c 5:1 rwm' >> /var/lib/lxc/u1/config"
-	sudo bash -c "echo 'lxc.rootfs = /mnt/containers/u1/rootfs' >> /var/lib/lxc/u1/config"
-	sudo bash -c "echo 'lxc.mount = /mnt/containers/u1/fstab' >> /var/lib/lxc/u1/config"
+	sudo bash -c "echo 'lxc.rootfs = /var/lib/lxc/u1/rootfs' >> /var/lib/lxc/u1/config"
+	sudo bash -c "echo 'lxc.mount = /var/lib/lxc/u1/fstab' >> /var/lib/lxc/u1/config"
 	sudo bash -c "echo 'lxc.mount.auto = proc:rw sys:rw cgroup-full:rw' >> /var/lib/lxc/u1/config"
 	sudo bash -c "echo 'lxc.aa_profile = unconfined' >> /var/lib/lxc/u1/config"	
 fi
