@@ -18,7 +18,7 @@ CONTAINER = "u1"
 CONTAINER_IP = "10.0.3.111"
 HOME = expanduser("~") # Assume the MSMR_ROOT path is the same in host OS as in lxc container.
 USER = os.environ["USER"]
-
+CONTAINER_USER= "ubuntu"   
 def set_local_config(args):
 
     cur_env = os.environ.copy()
@@ -121,7 +121,7 @@ def execute_servers(args):
     # psshcmd = cmd
     if args.enable_lxc == "yes":
         psshcmd = "parallel-ssh -l %s -v -p 1 -x \"-oStrictHostKeyChecking=no  -i ./.ssh/lxc_priv_key\" -i -t 10 -h %s/eval-container/%s " % (
-            USER, MSMR_ROOT, CONTAINER)
+            CONTAINER_USER, MSMR_ROOT, CONTAINER)
         psshcmd = psshcmd + "\"" + cmd + "\"";
         print "Replay real server command in lxc container:"
         print psshcmd
