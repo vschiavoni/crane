@@ -20,7 +20,7 @@ input_url="127.0.0.1"                                 # url for client to query
 analysis_tools=""                                     # for executing analysis tools (e.g., analysis_tools="--worker1=helgrind")
 
 num_req=1000
-num_thd=8
+num_thd=32
 
 # IO bound workloads.
 #client_opt_7000="-n ${num_req} -c ${num_thd} http://${primary_ip}:7000/"
@@ -46,20 +46,25 @@ else
 fi
 sleep 1
 
+#page="test.php"
+page="index.html"
 # CPU bound workloads.
-client_opt_7000="-n ${num_req} -c ${num_thd} http://${primary_ip}:7000/test.php"
-client_opt_9000="-n ${num_req} -c ${num_thd} http://${primary_ip}:9000/test.php"
+client_opt_7000="-n ${num_req} -c ${num_thd} http://${primary_ip}:7000/${page}"
+client_opt_9000="-n ${num_req} -c ${num_thd} http://${primary_ip}:9000/${page}"
 
 if [ $proxy -eq 1 ]
 then
     if [ $leader_elect -eq 1 ]
     then
-        client_cmd="${msmr_root_client}/apps/apache/install/bin/ab ${client_opt_9000}"
+        #client_cmd="${msmr_root_client}/apps/apache/install/bin/ab ${client_opt_9000}"
+        client_cmd="ab ${client_opt_9000}"
     else
-        client_cmd="${msmr_root_client}/apps/apache/install/bin/ab ${client_opt_9000}"
+        #client_cmd="${msmr_root_client}/apps/apache/install/bin/ab ${client_opt_9000}"
+        client_cmd="ab ${client_opt_9000}"
     fi
 else
-    client_cmd="${msmr_root_client}/apps/apache/install/bin/ab ${client_opt_7000}"
+    #client_cmd="${msmr_root_client}/apps/apache/install/bin/ab ${client_opt_7000}"
+    client_cmd="ab ${client_opt_7000}"
 fi
                                                       # command to start the clients
 server_cmd="'rm ${msmr_root_server}/apps/apache/install/logs/*; ${msmr_root_server}/apps/apache/install/bin/apachectl \

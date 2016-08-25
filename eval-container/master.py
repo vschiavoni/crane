@@ -145,18 +145,16 @@ def restart_head(args):
     print output 
     
 
-def run_clients(args, newIP=False):
+def run_clients(args):
     cur_env = os.environ.copy()
     # When client and server are required to be on the same side(mediatomb), 
     # you may wan to comment the following LD_PRELOAD line to prevent some errors.
     if args.proxy == 1 and args.app != "clamd" and args.app != "mediatomb" and args.app != "mysqld":
         print "Preload client library"
         cur_env['LD_PRELOAD'] = MSMR_ROOT + '/libevent_paxos/client-ld-preload/libclilib.so'
-    # Just a temporary hack on the new server ip 
-    if(newIP):
-      args.ccmd = '/home/tianyu/workspace/crane/apps/apache/install/bin/ab -n 128 -c 8 http://128.59.17.172:9000/test.php'
     print "client cmd reply : " + args.ccmd
-
+    print cur_env['LD_PRELOAD']
+    print "Will execute:" + args.ccmd 
     p = subprocess.Popen(args.ccmd, env=cur_env, shell=True, stdout=subprocess.PIPE)
     output, err = p.communicate()
     print output
