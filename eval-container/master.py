@@ -244,27 +244,7 @@ def main(args):
             client_sleep = 120
         exit_print = "Client workload done. Please grab performance result. Wait %d seconds before exit. " % (client_sleep)
         print exit_print
-        time.sleep(client_sleep)
-
-    # if args.checkpoint == 1:
-        # Start Qiushan's script
-        # run CRIU only on bug02(Node 2)
-        #run_criu(args)
-        # Wait for at least 20s before running client
-        # Checkpoint a process will be finished in a flash, about 20~60ms
-        #time.sleep(20)
-
-        # Start Heming's script
-    #     print "Start Heming's checkpoint"
-    #     run_criu(args)
-
-
-    # Sending requests after the expriments
-    #print "Let's wait 5s for the checkpointed process to become stable"
-    #time.sleep(5)
-    #print "Client starts : !!! After checkpoint !!!"
-    #run_clients(args)
-    #time.sleep(5)
+        time.sleep(client_sleep)  
 
     # Starts the leader election demo
     if args.leader_ele == 1 and args.proxy == 1:
