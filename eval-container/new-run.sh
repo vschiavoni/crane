@@ -28,25 +28,34 @@ build_project="true"
 if [ $2"X" != "X" ]; then
   if [ $2 == "no_build" ]; then
     build_project="false";
-	elif [ $2 == "build" ]; then
+        elif [ $2 == "build" ]; then
     build_project="true";
-	fi
+        fi
 fi
 
 if [ $build_project == "true" ]; then
   # Update worker-build.py to the server
-  scp worker-build.py bug03.cs.columbia.edu:~/
-  scp worker-build.py bug01.cs.columbia.edu:~/
-  scp worker-build.py bug02.cs.columbia.edu:~/
+  scp worker-build.py sgx1:~/
+  scp worker-build.py sgx2:~/
+  scp worker-build.py sgx3:~/
 fi
 
 # Update worker-run.py to the server
-scp worker-run.py bug03.cs.columbia.edu:~/
-scp worker-run.py bug01.cs.columbia.edu:~/
-scp worker-run.py bug02.cs.columbia.edu:~/
+scp worker-run.py sgx1:~/
+scp worker-run.py sgx2:~/
+scp worker-run.py sgx3:~/
+
+scp nodes.local.cfg sgx1:~/crane/eval-container/
+scp nodes.local.cfg sgx2:~/crane/eval-container/
+scp nodes.local.cfg sgx3:~/crane/eval-container/
+
+scp nodes.local.cfg sgx1:~/crane/libevent_paxos/target/
+scp nodes.local.cfg sgx2:~/crane/libevent_paxos/target/
+scp nodes.local.cfg sgx3:~/crane/libevent_paxos/target/
+
 
 # Update criu-cr.py to the bug02 (a.k.a. Node 2)
-scp criu-cr.py bug02.cs.columbia.edu:~/
+scp criu-cr.py sgx2:~/
 
 echo "running $app with config $3 for $4 rounds..."
 for i in `seq 1 $4`; do
@@ -58,4 +67,3 @@ for i in `seq 1 $4`; do
     --scmd "${server_cmd}" --ccmd "${client_cmd}" -b ${build_project} ${analysis_tools} \
     --enable-lxc ${enable_lxc} --dmt-log-output ${dmt_log_output} | tee perf_log/$dir_name/$app/$app-$3-`date +"%s"`.log
 done
-
