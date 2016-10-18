@@ -173,12 +173,7 @@ def main(args):
     run_servers(args, "no", "yes") # Then start the servers.
     print "Deployment Done! Wait 10s for the servers to become stable!!!"
     time.sleep(10)
-
-    ..
-    print "Wait for 180s to kill all the processes"
-    time.sleep(180)
-    kill_previous_process(args)
-
+ 
 
 ###############################################################################
 # Main - Parse command line options and invoke main()   
