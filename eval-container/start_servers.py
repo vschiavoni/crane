@@ -36,12 +36,12 @@ def kill_previous_process(args):
 
     # killall criu-cr.py via sudo
     # sgx2 worker2
-    cmd = 'sudo killall -9 criu-cr.py &> /dev/null' 
-    rcmd = 'parallel-ssh -l {username} -v -p 1 -i -t 15 -h worker2 {command}'.format(
-            username=USER, command=cmd)
-    p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
-    output, err = p.communicate()
-    print output
+    #cmd = 'sudo killall -9 criu-cr.py &> /dev/null' 
+    #rcmd = 'parallel-ssh -l {username} -v -p 1 -i -t 15 -h worker2 {command}'.format(
+    #        username=USER, command=cmd)
+    #p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
+    #output, err = p.communicate()
+    #print output
 
 
 def run_servers(args, start_proxy_only, start_server_only):
