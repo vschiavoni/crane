@@ -16,7 +16,7 @@ fi
 
 # run the server config script
 source $1 $3;
-
+build_project="false";
 ./stop_servers.py -a ${app} -x ${xtern} -p ${proxy} -l ${leader_elect} \
   -k ${checkpoint} -t ${checkpoint_period} \
   -c ${msmr_root_client} -s ${msmr_root_server} \
