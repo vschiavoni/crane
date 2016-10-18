@@ -67,5 +67,6 @@ else
     client_cmd="ab ${client_opt_7000}"
 fi
                                                       # command to start the clients
-server_cmd="'rm ${msmr_root_server}/apps/apache/install/logs/*; ${msmr_root_server}/apps/apache/install/bin/apachectl \
+#server_cmd="'rm -f ${msmr_root_server}/apps/apache/install/logs/*; ${msmr_root_server}/apps/apache/install/bin/apachectl \
+server_cmd="'${msmr_root_server}/apps/apache/install/bin/apachectl \
 	-f ${msmr_root_server}/apps/apache/install/conf/httpd.conf -k start '"

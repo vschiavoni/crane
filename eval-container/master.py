@@ -8,7 +8,6 @@ import signal
 import sys
 import os
 import subprocess
-
 logger = logging.getLogger("Benchmark.Master")
 
 MSMR_ROOT = ''
@@ -18,8 +17,7 @@ MSMR_ROOT = os.environ["MSMR_ROOT"]
 def kill_previous_process(args):
     
     print "Killing residual processes"
-    # Heming: added %s-amd64-, this is for killing valgrind sub processes such as helgrind-amd64-.
-    cmd = 'sudo killall -9 mencoder worker-run.py server.out %s %s-amd64- %s-amd64- %s-amd64-' % (
+    cmd = 'sudo killall -9 worker-run.py server.out %s %s-amd64- %s-amd64- %s-amd64-' % (
             args.app, args.head, args.worker1, args.worker2)
     rcmd = 'parallel-ssh -l {username} -v -p 3 -i -t 15 -h hostfile {command}'.format(
             username=USER, command=cmd)
@@ -34,15 +32,13 @@ def kill_previous_process(args):
     p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
     output, err = p.communicate()
     print output
-
-    # killall criu-cr.py via sudo
-    # bug02 worker2
-    cmd = 'sudo killall -9 criu-cr.py &> /dev/null' 
-    rcmd = 'parallel-ssh -l {username} -v -p 1 -i -t 15 -h worker2 {command}'.format(
-            username=USER, command=cmd)
-    p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
-    output, err = p.communicate()
-    print output
+    
+    #cmd = 'sudo killall -9 criu-cr.py &> /dev/null' 
+    #rcmd = 'parallel-ssh -l {username} -v -p 1 -i -t 15 -h worker2 {command}'.format(
+    #        username=USER, command=cmd)
+    #p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
+    #output, err = p.communicate()
+    #print output
 
 def build_project(args):
     cmd = "~/worker-build.py -s %s --enable-lxc %s" % (args.msmr_root_server, args.enable_lxc)
@@ -72,18 +68,15 @@ def run_servers(args, start_proxy_only, start_server_only):
             args.app, args.xtern, args.proxy, args.checkpoint,
             args.msmr_root_server, args.sp, args.sd, args.scmd, args.head, args.enable_lxc, args.dmt_log_output,
             start_proxy_only, start_server_only)
-    print "replaying server master node command: "
 
     rcmd = "parallel-ssh -l %s -v -p 1 -i -t 25 -h head \"%s\"" % (USER, cmd)
-    print rcmd
+    print "[RUN_SERVERS] Starting primary: %s " % (rcmd)
+    #print rcmd
+    
     # Start the head node first
     p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
     output, err = p.communicate()
-    print output
-
-    # We only test one node for now
-    # Don't forget to change nodes.local.cfg group_size on bug03!!!!!
-    #return
+    print output 
 
     if args.proxy == 0:
         return
@@ -100,49 +93,54 @@ def run_servers(args, start_proxy_only, start_server_only):
                 start_proxy_only, start_server_only)
         rcmd_workers = "parallel-ssh -l %s -v -p 1 -i -t 25 -h worker%d \"%s\"" % (
                 USER, node_id, wcmd)
-        print "Master: replaying master node command: "
-        print rcmd_workers
+        print "[RUN_SERVERS] Starting replica-%d with command: %s " %(node_id, rcmd_workers)
+        #print rcmd_workers
         # Start the secondary nodes one by one
         p = subprocess.Popen(rcmd_workers, shell=True, stdout=subprocess.PIPE)
         output, err = p.communicate()
         print output
+        print err
+    print "[RUN_SERVERS] Completed. "    
 
-def restart_head(args):
-    #cmd = '"~/head-restart.py"'
-    cmd = 'sudo killall -9 server.out ' + args.app
-    rcmd_head = 'parallel-ssh -l {username} -v -p 1 -i -t 15 -h head {command}'.format(
-        username=USER, command=cmd)
-    p = subprocess.Popen(rcmd_head, shell=True, stdout=subprocess.PIPE)
-    output, err = p.communicate()
-    print output
-
-    time.sleep(20)
-    # We don't do checkpoint restore for now!
-    return 
-
-    cmd = "~/worker-run.py -a %s -x %d -p %d -k %d -c %s -m s -i 0 --start_proxy_only yes --enable-lxc yes --sp %d --sd %d --scmd %s  --enable-lxc %s" % (
-            args.app, args.xtern, args.proxy, args.checkpoint,
-            args.msmr_root_server, args.sp, args.sd, args.scmd, args.enable_lxc)
-    print "replaying server master node command: "
-    rcmd = "parallel-ssh -l %s -v -p 1 -i -t 25 -h head \"%s\"" % (USER, cmd)
-    print rcmd
-    # Start the head node first
-    p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
-    output, err = p.communicate()
-    print output
-
-    time.sleep(10)
-
-    # Restore the checkpoint
-    cmd = "cd %s/eval-container && ./checkpoint-restore.sh restore %s checkpoint-*.tar.gz >| restore_output &" % (
-            MSMR_ROOT, args.app)
-    print "replaying server master node command: "
-    rcmd = "parallel-ssh -l %s -v -p 1 -i -t 600 -h head \"%s\"" % (USER, cmd)
-    print rcmd
-    # Start the head node first
-    p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
-    output, err = p.communicate()
-    print output 
+#def restart_head(args):
+#    #cmd = '"~/head-restart.py"'
+#    cmd = 'sudo killall -9 server.out ' + args.app
+#    rcmd_head = 'parallel-ssh -l {username} -v -p 1 -i -t 15 -h head {command}'.format(
+#        username=USER, command=cmd)
+#    p = subprocess.Popen(rcmd_head, shell=True, stdout=subprocess.PIPE)
+#    output, err = p.communicate()
+#    print output
+#
+#    time.sleep(20)
+#    # We don't do checkpoint restore for now!
+#    return 
+#
+#    cmd = "~/worker-run.py -a %s -x %d -p %d -k %d -c %s -m s -i 0 --start_proxy_only yes --enable-lxc yes --sp %d --sd %d --scmd %s  --enable-lxc %s" % (
+#            args.app, args.xtern, args.proxy, args.checkpoint,
+#            args.msmr_root_server, args.sp, args.sd, args.scmd, args.enable_lxc)
+#    print "replaying server master node command: "
+#    rcmd = "parallel-ssh -l %s -v -p 1 -i -t 25 -h head \"%s\"" % (USER, cmd)
+#    logger.info(rcmd)
+#    print rcmd
+#    
+#    # Start the head node first
+#    p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
+#    output, err = p.communicate()
+#    print output
+#
+#    time.sleep(10)
+#
+#    # Restore the checkpoint
+#    cmd = "cd %s/eval-container && ./checkpoint-restore.sh restore %s checkpoint-*.tar.gz >| restore_output &" % (
+#            MSMR_ROOT, args.app)
+#    print "replaying server master node command: "
+#    rcmd = "parallel-ssh -l %s -v -p 1 -i -t 600 -h head \"%s\"" % (USER, cmd)
+#    print rcmd
+#    
+#    # Start the head node first
+#    p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
+#    output, err = p.communicate()
+#    print output 
     
 
 def run_clients(args):
@@ -151,32 +149,14 @@ def run_clients(args):
     # you may wan to comment the following LD_PRELOAD line to prevent some errors.
     if args.proxy == 1 and args.app != "clamd" and args.app != "mediatomb" and args.app != "mysqld":
         print "Preload client library"
-        cur_env['LD_PRELOAD'] = MSMR_ROOT + '/libevent_paxos/client-ld-preload/libclilib.so'
-    print "client cmd reply : " + args.ccmd
-    print cur_env['LD_PRELOAD']
-    print "Will execute:" + args.ccmd 
+        cur_env['LD_PRELOAD'] = MSMR_ROOT + '/libevent_paxos/client-ld-preload/libclilib.so.1.0'
+    print "[RUN_CLIENTS] Client command: %s " %(args.ccmd)
+    #print "client cmd reply : " + args.ccmd
+
     p = subprocess.Popen(args.ccmd, env=cur_env, shell=True, stdout=subprocess.PIPE)
     output, err = p.communicate()
     print output
     
-# note: must use sudo
-# we run criu on node 2(bug02), so parallel-ssh should -h worker2
-#def run_criu(args):
-    #shcmd = "sudo ~/criu-cr.py -s %s -t %d &> ~/criu-cr.log" % (args.app, args.checkpoint_period)
-    #psshcmd = "parallel-ssh -v -p 1 -i -t 5 -h worker2 \"%s\""%(shcmd)
-    #print "Master: replaying master node command: "
-    #print psshcmd
-    #p = subprocess.Popen(psshcmd, shell=True, stdout=subprocess.PIPE)
-    #'''
-    ## below is for debugging
-    #output, err = p.communicate()
-    #print output
-    #if "FAILURE" in output:
-        #print "killall directly"
-        #kill_previous_process(args) 
-        #sys.exit(0)
-    #'''
-
 def run_criu(args):
     # 1. Checkpoint the server process
     cmd = "sudo ~/su-checkpoint.sh %s" % (args.app)
@@ -220,16 +200,18 @@ def main(args):
     if args.build_project == "true":
         build_project(args)
 
-    # Killall the previous experiment
+    print "[MAIN] Killall the previous experiment"    
     kill_previous_process(args) 
-
+    
+    print "[MAIN] Starting proxies and servers"
     run_servers(args, "yes", "no") # Start all proxies first, because we need proxy to connect with each other when the first server starts.
+    print "[MAIN] All proxies started"
     run_servers(args, "no", "yes") # Then start the servers.
-    print "Deployment Done! Wait 10s for the servers to become stable!!!"
+    print "[MAIN] All servers started. Waiting 10s to stabilize"
     time.sleep(10)
 
     if args.enable_lxc == "yes" and args.checkpoint == 1:
-        print "starting checkpoint on worker 1! "
+        print "LXC checkpoint enabled, starting checkpoint on worker 1! "
         checkpoint_worker(args)
     
     # Sending requests before the expriments
@@ -242,14 +224,14 @@ def main(args):
             client_sleep = 120
         exit_print = "Client workload done. Please grab performance result. Wait %d seconds before exit. " % (client_sleep)
         print exit_print
-        time.sleep(client_sleep)  
+        time.sleep(client_sleep)
 
     # Starts the leader election demo
-    if args.leader_ele == 1 and args.proxy == 1:
-        restart_head(args)
-        #time.sleep(30)
-        #print "Client starts : !!! After leader election!!!"
-        #run_clients(args, True)
+    #if args.leader_ele == 1 and args.proxy == 1:
+    #    restart_head(args)
+    #    #time.sleep(30)
+    #    #print "Client starts : !!! After leader election!!!"
+    #    #run_clients(args, True)
 
     print "Wait for 180s to kill all the processes"
     time.sleep(180)

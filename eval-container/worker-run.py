@@ -7,6 +7,7 @@ import logging
 import subprocess
 import argparse
 import os
+import logging
 from os.path import expanduser
 
 logger = logging.getLogger("Benchmark.Worker")
@@ -18,7 +19,7 @@ CONTAINER = "u1"
 CONTAINER_IP = "10.0.3.111"
 HOME = expanduser("~") # Assume the MSMR_ROOT path is the same in host OS as in lxc container.
 USER = os.environ["USER"]
-CONTAINER_USER= "ubuntu"   
+CONTAINER_USER= "valerio"   
 def set_local_config(args):
 
     cur_env = os.environ.copy()
@@ -64,14 +65,14 @@ def execute_proxy(args):
     cmd = 'ulimit -s 819200; ulimit -n 4096; ulimit -a > ulimit.txt; sudo rm -rf /dev/shm/* /tmp/mysql.sock; rm -rf ./.db ./log; mkdir ./log && \
            $SERVER_PROGRAM -n %d -r -m %s -c $CONFIG_FILE -l ./log 1> ./log/node_%d_stdout 2>./log/node_%d_stderr &' % (
            args.node_id, args.mode, args.node_id, args.node_id)
-    print "Replaying Proxy cmd : " + cmd
+    print "[WORKER-RUN][EXECUTE_PROXY] Replaying Proxy cmd : %s "%(cmd)
 
     p = subprocess.Popen(cmd, env=cur_env, shell=True, stdout=subprocess.PIPE)
     output, err = p.communicate()
     print output
 
 def execute_servers(args):
-
+    print "[WORKER-RUN][EXECUTE_SERVERS] Entering execute_servers"
     cur_env = os.environ.copy()
 
     if args.enable_lxc == "yes":

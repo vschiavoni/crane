@@ -1,4 +1,4 @@
-GCC := gcc-4.8
+GCC := gcc#-4.8
 CFLAGS := -Wall -O2 -g -std=gnu11 -I../.local/include
 LDFLAGS := 
 
