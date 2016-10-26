@@ -18,8 +18,7 @@ MSMR_ROOT = os.environ["MSMR_ROOT"]
 def kill_previous_process(args):
     
     print "Killing residual processes"
-    cmd = 'sudo killall -9 mencoder worker-run.py server.out %s %s-amd64- %s-amd64- %s-amd64-' % (
-            args.app, args.head, args.worker1, args.worker2)
+    cmd = 'sudo killall -9 worker-run.py server.out %s ' % (args.app )
     rcmd = 'parallel-ssh -l {username} -v -p 3 -i -t 15 -h hostfile {command}'.format(
             username=USER, command=cmd)
     p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
@@ -58,10 +57,6 @@ def run_servers(args, start_proxy_only, start_server_only):
     p = subprocess.Popen(rcmd, shell=True, stdout=subprocess.PIPE)
     output, err = p.communicate()
     print output
-
-    # We only test one node for now
-    # Don't forget to change nodes.local.cfg group_size on bug03!!!!!
-    #return
 
     if args.proxy == 0:
         return
