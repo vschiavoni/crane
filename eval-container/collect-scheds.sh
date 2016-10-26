@@ -1,7 +1,7 @@
 #!/bin/bash
 
 process_host() {
-ssh $USER@$HOST.cs.columbia.edu <<'ENDSSH'
+ssh $USER@$HOST <<'ENDSSH'
 #commands to run on remote host
 cd /dev/shm/dmt_out/
 HOST=`hostname`
@@ -21,7 +21,7 @@ do
 done
 ENDSSH
 
-scp $HOST.cs.columbia.edu:/dev/shm/dmt_out/$HOST* scheds/
+scp $HOST:/dev/shm/dmt_out/$HOST* scheds/
 sync
 }
 
@@ -32,8 +32,8 @@ mkdir scheds
 RESULT=0
 STD_FILE=""
 STD_OUTPUT_FILE=""
-HOST="bug03"
-echo "Collecting schedules from /dev/shm/dmt_out/ directory on bug0* machines..."
+HOST="sgx3"
+echo "Collecting schedules from /dev/shm/dmt_out/ directory on sgx* machines..."
 process_host &> /dev/null
 LINE=0
 cd scheds
@@ -55,10 +55,10 @@ do
 done
 cd ..
 
-HOST="bug01"
+HOST="sgx1"
 process_host &> /dev/null
 
-HOST="bug02"
+HOST="sgx1"
 process_host &> /dev/null
 
 (( LINE++ ))
