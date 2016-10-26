@@ -102,13 +102,13 @@ def execute_servers(args):
     cmd = args.scmd
     tool_cmd = ""
 
-    if args.analysis_tool != "none":
-        if args.analysis_tool[:2] == "dr":  # if this is a dynamorio tool.
-            tool_cmd = "/usr/share/dynamorio/build/bin64/drrun -t " + args.analysis_tool + " -logdir ./log -- "
-            if args.xtern == 1: # WARN: if you start a server with script, you need to add this for dynamorio.
-                tool_cmd = tool_cmd + " /bin/bash "
-        else: # else, only support valgrind tool.
-            tool_cmd = "valgrind -v --log-file=valgrind.result --tool=" + args.analysis_tool + " --trace-children=yes "
+    #if args.analysis_tool != "none":
+    #    if args.analysis_tool[:2] == "dr":  # if this is a dynamorio tool.
+    #        tool_cmd = "/usr/share/dynamorio/build/bin64/drrun -t " + args.analysis_tool + " -logdir ./log -- "
+    #        if args.xtern == 1: # WARN: if you start a server with script, you need to add this for dynamorio.
+    #            tool_cmd = tool_cmd + " /bin/bash "
+    #    else: # else, only support valgrind tool.
+    #        tool_cmd = "valgrind -v --log-file=valgrind.result --tool=" + args.analysis_tool + " --trace-children=yes "
 
     if args.xtern == 1:
         print "XTERN is enabled. Preload library."
@@ -118,22 +118,19 @@ def execute_servers(args):
         time.sleep(2)
 
     cmd = tool_cmd + cmd
-    # Don't add print
-    # psshcmd = cmd
+    
     if args.enable_lxc == "yes":
         psshcmd = "parallel-ssh -l %s -v -p 1 -x \"-oStrictHostKeyChecking=no  -i ./.ssh/lxc_priv_key\" -i -t 10 -h %s/eval-container/%s " % (
             CONTAINER_USER, MSMR_ROOT, CONTAINER)
         psshcmd = psshcmd + "\"" + cmd + "\"";
-        print "Replay real server command in lxc container:"
-        print psshcmd
+        print "Replay real server command in lxc container: %s" %(psshcmd)
         p = subprocess.Popen(psshcmd, env=cur_env, shell=True, stdout=subprocess.PIPE)
         output, err = p.communicate()
         print output
+        print "Error from LXC exec: "+err
     else:
-        print "Replay real server command in host OS:"
-        print cmd
+        print "Replay real server command in host OS: %s" % (cmd)
         p = subprocess.Popen(cmd, env=cur_env, shell=True, stdout=subprocess.PIPE)
-
 
 def restart_proxy(args):
 
