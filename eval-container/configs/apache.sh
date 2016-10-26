@@ -10,9 +10,9 @@ sch_paxos=1                                           # 1 xtern will schedule wi
 sch_dmt=1                                             # 1 libevent_paxos will schedule with DMT, 0 otherwise
 enable_lxc="yes"
 
-dmt_log_output=0
+dmt_log_output=1
 leader_elect=0                                        # 1 enable leader election demo, 0 otherwise
-checkpoint=0                                          # 1 use checkpoint on relicas, 0 otherwise
+checkpoint=1                                          # 1 use checkpoint on relicas, 0 otherwise
 checkpoint_period=10                                  # period of CRIU checkpoint, e.g. 10 seconds
 msmr_root_client=`echo $MSMR_ROOT`        # root dir for m-smr
 msmr_root_server=`echo $MSMR_ROOT`
