@@ -1,6 +1,7 @@
 #!/bin/bash
 #How to use:
 #./start_servers.sh configs/apache.sh no_build proxy_only 1
+#./start_servers.sh configs/apache.sh no_build joint_sched 1
 
 cd $XTERN_ROOT
 xtern_ver=`git log -n 1 --format="%h"`
@@ -62,4 +63,4 @@ echo "running $app with config $3 for"
   -c ${msmr_root_client} -s ${msmr_root_server} \
   --sp ${sch_paxos} --sd ${sch_dmt} \
   --scmd "${server_cmd}" --ccmd "${client_cmd}" -b ${build_project} ${analysis_tools} \
-  --enable-lxc ${enable_lxc} --dmt-log-output ${dmt_log_output} | tee perf_log/$dir_name/$app/$app-$3-`date +"%s"`.log
+  --enable-lxc no --dmt-log-output ${dmt_log_output} | tee perf_log/$dir_name/$app/$app-$3-`date +"%s"`.log
