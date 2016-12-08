@@ -11,16 +11,16 @@ sch_dmt=1                                             # 1 libevent_paxos will sc
 enable_lxc="yes"
 
 dmt_log_output=1
-leader_elect=0                                        # 1 enable leader election demo, 0 otherwise
-checkpoint=1                                          # 1 use checkpoint on relicas, 0 otherwise
+leader_elect=1                                        # 1 enable leader election demo, 0 otherwise
+checkpoint=0                                          # 1 use checkpoint on relicas, 0 otherwise
 checkpoint_period=10                                  # period of CRIU checkpoint, e.g. 10 seconds
 msmr_root_client=`echo $MSMR_ROOT`        # root dir for m-smr
 msmr_root_server=`echo $MSMR_ROOT`
-input_url="127.0.0.1"                                 # url for client to query
+input_url="10.3.1.1"                                 # url for client to query
 analysis_tools=""                                     # for executing analysis tools (e.g., analysis_tools="--worker1=helgrind")
 
 num_req=1000
-num_thd=32
+num_thd=8
 
 # IO bound workloads.
 #client_opt_7000="-n ${num_req} -c ${num_thd} http://${primary_ip}:7000/"

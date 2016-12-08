@@ -57,7 +57,7 @@ def execute_proxy(args):
     # Preparing the environment
     cur_env['MSMR_ROOT'] = MSMR_ROOT
     cur_env['XTERN_ROOT'] = XTERN_ROOT
-    cur_env['LD_LIBRARY_PATH'] = MSMR_ROOT + '/libevent_paxos/.local/lib'
+    cur_env['LD_LIBRARY_PATH'] = MSMR_ROOT + '/libevent_paxos/.local/lib' + ':' + MSMR_ROOT + '/libevent_paxos/client-ld-preload'
 
     cur_env['CONFIG_FILE'] = 'nodes.local.cfg'
     cur_env['SERVER_PROGRAM'] = MSMR_ROOT + '/libevent_paxos/target/server.out'
