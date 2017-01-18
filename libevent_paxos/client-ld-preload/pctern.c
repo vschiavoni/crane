@@ -159,3 +159,10 @@ ssize_t write(int fd, const void *buf, size_t count){
     return ret;
 }
 
+ssize_t writev(int fd, const struct iovec *iov, int iovcnt)
+{
+    size_t total=0;
+    for (int i = 0; i< iovcnt; i++) total += write(fd, iov[i].iov_base, iov[i].iov_len);
+    return total;
+}
+
